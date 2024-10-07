@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/lucasti79/bgw4-put-patch-delete/config"
 	"github.com/lucasti79/bgw4-put-patch-delete/internal/domain"
 	"github.com/lucasti79/bgw4-put-patch-delete/pkg/apperrors"
 	"github.com/lucasti79/bgw4-put-patch-delete/pkg/web"
@@ -58,6 +59,15 @@ func (p *ProductsHandler) Show() http.HandlerFunc {
 
 func (p *ProductsHandler) UpdateOrCreate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
+		if token := r.Header.Get("token"); token != config.Config.ApiToken {
+			code := http.StatusUnauthorized
+			message := map[string]any{"message": "unauthorized", "data": nil}
+
+			web.ResponseJSON(w, code, message)
+			return
+		}
+
 		id, err := strconv.Atoi(chi.URLParam(r, "id"))
 		if err != nil {
 			code := http.StatusBadRequest
