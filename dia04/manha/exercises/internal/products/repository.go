@@ -48,7 +48,7 @@ func (r *repository) FindByCode(code string) (*domain.Product, error) {
 			return product, nil
 		}
 	}
-	return &domain.Product{}, apperrors.ErrNotFound
+	return nil, apperrors.ErrNotFound
 }
 
 func (r *repository) ExistsCode(code string) bool {

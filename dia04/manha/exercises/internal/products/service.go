@@ -44,21 +44,14 @@ func (s *service) Create(product domain.Product) (domain.Product, error) {
 }
 
 func (s *service) Update(id int, product domain.Product) (domain.Product, error) {
-	p, err := s.repo.FindByCode(product.Code)
+	productMatchedWithCode, err := s.repo.FindByCode(product.Code)
 
-	if p != nil {
-		if p.Id != id {
-			return domain.Product{}, ErrCodeAlreadyExists
-		}
-		return s.repo.Update(id, product)
+	if err != nil && !errors.Is(err, apperrors.ErrNotFound) {
+		return domain.Product{}, err
 	}
 
-	if err != nil {
-		if errors.Is(err, apperrors.ErrNotFound) {
-			return s.repo.Update(id, product)
-		}
-
-		return domain.Product{}, err
+	if productMatchedWithCode != nil && productMatchedWithCode.Id != id {
+		return domain.Product{}, ErrCodeAlreadyExists
 	}
 
 	return s.repo.Update(id, product)
