@@ -49,17 +49,20 @@ func TestProductHandler_Index(t *testing.T) {
 
 		expectedCode := http.StatusOK
 		expectedHeader := http.Header{"Content-Type": []string{"application/json"}}
-		// expectedData := []domain.Product{product1}
-		// expectedLength := 1
-		getResponse := web.Response{}
+		expectedData := []domain.Product{product1}
+
+		var getResponse struct {
+			Error   bool             `json:"error"`
+			Data    []domain.Product `json:"data,omitempty"`
+			Message string           `json:"message,omitempty"`
+		}
 
 		err := json.Unmarshal(res.Body.Bytes(), &getResponse)
 		assert.NoError(t, err)
 
 		assert.Equal(t, expectedCode, res.Code)
 		assert.Equal(t, expectedHeader, res.Header())
-		// require.Equal(t, expectedLength, len(getResponse.Data.([]domain.Product)))
-		// require.ElementsMatch(t, expectedData, getResponse.Data)
+		assert.Equal(t, expectedData, getResponse.Data)
 	})
 	t.Run("should return no content when there are no products", func(t *testing.T) {
 		// given
@@ -95,7 +98,7 @@ func TestProductHandler_Index(t *testing.T) {
 		expectedCode := http.StatusUnauthorized
 
 		assert.Equal(t, expectedCode, res.Code)
-		os.Setenv("API_TOKEN", "")
+		os.Unsetenv("API_TOKEN")
 	})
 
 }
@@ -208,7 +211,7 @@ func TestProductHandler_Show(t *testing.T) {
 		expectedCode := http.StatusUnauthorized
 
 		assert.Equal(t, expectedCode, res.Code)
-		os.Setenv("API_TOKEN", "")
+		os.Unsetenv("API_TOKEN")
 
 	})
 }
@@ -260,7 +263,7 @@ func TestProductHandler_Create(t *testing.T) {
 		expectedCode := http.StatusUnauthorized
 
 		assert.Equal(t, expectedCode, res.Code)
-		os.Setenv("API_TOKEN", "")
+		os.Unsetenv("API_TOKEN")
 	})
 
 }
@@ -346,7 +349,7 @@ func TestProductHandlerUpdate(t *testing.T) {
 		expectedCode := http.StatusUnauthorized
 
 		assert.Equal(t, expectedCode, res.Code)
-		os.Setenv("API_TOKEN", "")
+		os.Unsetenv("API_TOKEN")
 	})
 
 }
@@ -463,7 +466,7 @@ func TestProductHandlerDelete(t *testing.T) {
 		expectedCode := http.StatusUnauthorized
 
 		assert.Equal(t, expectedCode, res.Code)
-		os.Setenv("API_TOKEN", "")
+		os.Unsetenv("API_TOKEN")
 	})
 
 }
