@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/lucasti79/bgw4-go-web-parameters/cmd/server/handlers"
+	"github.com/lucasti79/bgw4-go-web-parameters/cmd/http/handlers"
 	"github.com/lucasti79/bgw4-go-web-parameters/internal/domain"
 )
 
