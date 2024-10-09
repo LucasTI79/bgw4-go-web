@@ -34,7 +34,6 @@ func (h *ProductHandler) Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	web.SucessResponse(w, http.StatusOK, products)
-	return
 }
 
 func (h *ProductHandler) Show(w http.ResponseWriter, r *http.Request) {

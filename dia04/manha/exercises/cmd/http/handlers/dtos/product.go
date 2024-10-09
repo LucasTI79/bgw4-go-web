@@ -2,6 +2,8 @@ package dtos
 
 import "github.com/lucasti79/bgw4-pratica-web/internal/domain"
 
+// Data Transfer Object
+
 type CreateProductInput struct {
 	Name       string  `json:"name"`
 	Quantity   *int    `json:"quantity"`
